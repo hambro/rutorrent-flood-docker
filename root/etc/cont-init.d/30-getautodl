@@ -14,6 +14,10 @@ chown -R abc:abc /usr/share/webapps/rutorrent/plugins/autodl-irssi/)
   ln -s /config/.irssi/scripts/autodl-irssi.pl /config/.irssi/scripts/autorun/autodl-irssi.pl && \
   chown -R abc:abc /config/.irssi )
 
+[[ ! -d /config/.irssi/scripts/autodl-curl-sonarr ]] && ( \
+  git clone https://github.com/hambro/autodl-curl-sonarr.git /config/.irssi/scripts/autodl-curl-sonarr && \
+  chown -R abc:abc /config/.irssi/scripts/autodl-curl-sonarr ) 
+
 # get updated trackers for irssi-autodl
 wget --quiet -O /tmp/trackers.zip https://github.com/autodl-community/autodl-trackers/archive/master.zip && \
 [[ ! -d /config/.irssi/scripts/AutodlIrssi/trackers ]] && mkdir -p /config/.irssi/scripts/AutodlIrssi/trackers && \
