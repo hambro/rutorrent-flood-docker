@@ -7,6 +7,11 @@ pipeline {
   }
   agent { label 'Alpine' }
   stages {
+    stage('Clean Workspace') {
+      steps {
+        cleanWs()
+        }
+    }
     stage('Cloning Git Repository') {
       steps {
         git url: 'https://github.com/Bryzgalin/rutorrent-flood-docker.git',
