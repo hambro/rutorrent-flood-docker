@@ -6,7 +6,7 @@ pipeline {
     registryCredential = 'dockerhub'
     MAXMIND_LICENSE_KEY = credentials('maxmind-license-key')
   }
-  agent any
+  agent { label 'Alpine' }
   stages {
     stage('Cloning Git Repository') {
       steps {
