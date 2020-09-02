@@ -4,7 +4,6 @@ pipeline {
     repository = "rutorrent-flood"
     withCredentials = 'dockerhub'
     registryCredential = 'dockerhub'
-    MAXMIND_LICENSE_KEY = credentials('maxmind-license-key')
   }
   agent { label 'Alpine' }
   stages {
