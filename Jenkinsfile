@@ -1,7 +1,8 @@
 pipeline {
   environment {
-    registry = "ibryzg/rutorrent-flood"
-    repository = "rutorrent-flood"
+    registry = 'ibryzg/rutorrent-flood'
+    registry_remove = 'lumir/remove-dockerhub-tag'
+    repository = 'rutorrent-flood'
     withCredentials = 'dockerhub'
     registryCredential = 'dockerhub'
   }
@@ -100,15 +101,31 @@ pipeline {
       when{
         branch 'develop'
         }
+      environment {
+        gitbranch = ''
+        base = ''
+        major = ''
+        minor = ''
+        patch = ''
+      }
       steps {
         script {
-          def gitbranch = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
+          gitbranch = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
           def version = readFile('VERSION')
           def versions = version.split('\\.')
-          def base = gitbranch
-          def major = gitbranch + '-' + versions[0]
-          def minor = gitbranch + '-' + versions[0] + '.' + versions[1]
-          def patch = gitbranch + '-' + version.trim()
+          base = gitbranch
+          major = gitbranch + '-' + versions[0]
+          minor = gitbranch + '-' + versions[0] + '.' + versions[1]
+          patch = gitbranch + '-' + version.trim()
+        }
+        script {
+          withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
+            docker.image("$registry_remove:latest").withRun('-v "$PWD:/data"', "--user $DOCKERHUB_USERNAME --password '$DOCKERHUB_PASSWORD' $registry:$base $registry:$major $registry:$minor $registry:$patch") { c ->
+              sh "docker logs ${c.id} -f"
+            }
+          }
+        }
+        script {
           docker.withRegistry('', registryCredential) {
             withCredentials([string(credentialsId: 'maxind', variable: 'MAXMIND_LICENSE_KEY')]) {
               def image = docker.build("$registry:$gitbranch",  "--build-arg BASEIMAGE_VERSION=3.11 --build-arg RTORRENT_VER=v0.9.8 --build-arg LIBTORRENT_VER=v0.13.8 --build-arg MAXMIND_LICENSE_KEY=${MAXMIND_LICENSE_KEY} -f Dockerfile .")
