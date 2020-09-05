@@ -17,6 +17,7 @@ services:
         - SSL_ENABLED=NO
         - RT_TOKEN=
         - RT_MASTERS=
+        - RT_COMPLETED=
       ports:
         - "8880:80"
         #- "8443:443"
