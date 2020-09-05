@@ -5,6 +5,12 @@ pipeline {
     repository = 'rutorrent-flood'
     withCredentials = 'dockerhub'
     registryCredential = 'dockerhub'
+
+    gitbranch = ''
+    base = ''
+    major = ''
+    minor = ''
+    patch = ''
   }
   agent { label 'Alpine' }
   stages {
@@ -25,23 +31,9 @@ pipeline {
         }
       steps {
         script {
-          def gitbranch = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
-          def version = readFile('VERSION')
-          def versions = version.split('\\.')
-          def base = gitbranch
-          def major = gitbranch + '-' + versions[0]
-          def minor = gitbranch + '-' + versions[0] + '.' + versions[1]
-          def patch = gitbranch + '-' + version.trim()
-          docker.withRegistry('', registryCredential) {
-            withCredentials([string(credentialsId: 'maxind', variable: 'MAXMIND_LICENSE_KEY')]) {
-              def image = docker.build("$registry:$gitbranch", "--build-arg BASEIMAGE_VERSION=3.8 --build-arg RTORRENT_VER=v0.9.4 --build-arg LIBTORRENT_VER=v0.13.4 --build-arg MAXMIND_LICENSE_KEY=${MAXMIND_LICENSE_KEY} -f Dockerfile .")
-              image.push()
-              image.push(base)
-              image.push(major)
-              image.push(minor)
-              image.push(patch)
-            }
-          }
+          setTags()
+          removeDockerhubImages()
+          buildImage('3.8', 'v0.9.4', 'v0.13.4')
         }
       }
     }
@@ -51,23 +43,9 @@ pipeline {
         }
       steps {
         script {
-          def gitbranch = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
-          def version = readFile('VERSION')
-          def versions = version.split('\\.')
-          def base = gitbranch
-          def major = gitbranch + '-' + versions[0]
-          def minor = gitbranch + '-' + versions[0] + '.' + versions[1]
-          def patch = gitbranch + '-' + version.trim()
-          docker.withRegistry('', registryCredential) {
-            withCredentials([string(credentialsId: 'maxind', variable: 'MAXMIND_LICENSE_KEY')]) {
-              def image = docker.build("$registry:$gitbranch", "--build-arg BASEIMAGE_VERSION=3.8 --build-arg RTORRENT_VER=v0.9.6 --build-arg LIBTORRENT_VER=v0.13.6 --build-arg MAXMIND_LICENSE_KEY=${MAXMIND_LICENSE_KEY} -f Dockerfile .")
-              image.push()
-              image.push(base)
-              image.push(major)
-              image.push(minor)
-              image.push(patch)
-            }
-          }
+          setTags()
+          removeDockerhubImages()
+          buildImage('3.8', 'v0.9.6', 'v0.13.6')
         }
       }
     }
@@ -77,23 +55,9 @@ pipeline {
         }
       steps {
         script {
-          def gitbranch = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
-          def version = readFile('VERSION')
-          def versions = version.split('\\.')
-          def base = gitbranch
-          def major = gitbranch + '-' + versions[0]
-          def minor = gitbranch + '-' + versions[0] + '.' + versions[1]
-          def patch = gitbranch + '-' + version.trim()
-          docker.withRegistry('', registryCredential) {
-            withCredentials([string(credentialsId: 'maxind', variable: 'MAXMIND_LICENSE_KEY')]) {
-              def image = docker.build("$registry:$gitbranch", "--build-arg BASEIMAGE_VERSION=3.8 --build-arg RTORRENT_VER=v0.9.7 --build-arg LIBTORRENT_VER=v0.13.7 --build-arg MAXMIND_LICENSE_KEY=${MAXMIND_LICENSE_KEY} -f Dockerfile .")
-              image.push()
-              image.push(base)
-              image.push(major)
-              image.push(minor)
-              image.push(patch)
-            }
-          }
+          setTags()
+          removeDockerhubImages()
+          buildImage('3.8', 'v0.9.7', 'v0.13.7')
         }
       }
     }
@@ -101,41 +65,11 @@ pipeline {
       when{
         branch 'develop'
         }
-      environment {
-        gitbranch = ''
-        base = ''
-        major = ''
-        minor = ''
-        patch = ''
-      }
       steps {
         script {
-          gitbranch = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
-          def version = readFile('VERSION')
-          def versions = version.split('\\.')
-          base = gitbranch
-          major = gitbranch + '-' + versions[0]
-          minor = gitbranch + '-' + versions[0] + '.' + versions[1]
-          patch = gitbranch + '-' + version.trim()
-        }
-        script {
-          withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
-            docker.image("$registry_remove:latest").withRun('-v "$PWD:/data"', "--user $DOCKERHUB_USERNAME --password '$DOCKERHUB_PASSWORD' $registry:$base $registry:$major $registry:$minor $registry:$patch") { c ->
-              sh "docker logs ${c.id} -f"
-            }
-          }
-        }
-        script {
-          docker.withRegistry('', registryCredential) {
-            withCredentials([string(credentialsId: 'maxind', variable: 'MAXMIND_LICENSE_KEY')]) {
-              def image = docker.build("$registry:$gitbranch",  "--build-arg BASEIMAGE_VERSION=3.11 --build-arg RTORRENT_VER=v0.9.8 --build-arg LIBTORRENT_VER=v0.13.8 --build-arg MAXMIND_LICENSE_KEY=${MAXMIND_LICENSE_KEY} -f Dockerfile .")
-              image.push()
-              image.push(base)
-              image.push(major)
-              image.push(minor)
-              image.push(patch)
-            }
-          }
+          setTags()
+          removeDockerhubImages()
+          buildImage('3.11', 'v0.9.8', 'v0.13.8')
         }
       }
     }
@@ -145,22 +79,9 @@ pipeline {
         }
       steps {
         script {
-          def version = readFile('VERSION')
-          def versions = version.split('\\.')
-          def base = '0.9.8'
-          def major = '0.9.8-' + versions[0]
-          def minor = '0.9.8-' + versions[0] + '.' + versions[1]
-          def patch = '0.9.8-' + version.trim()
-          docker.withRegistry('', registryCredential) {
-            withCredentials([string(credentialsId: 'maxind', variable: 'MAXMIND_LICENSE_KEY')]) {
-              def image = docker.build("$registry:latest", "--build-arg BASEIMAGE_VERSION=3.11 --build-arg RTORRENT_VER=v0.9.8 --build-arg LIBTORRENT_VER=v0.13.8 --build-arg MAXMIND_LICENSE_KEY=${MAXMIND_LICENSE_KEY} -f Dockerfile .")
-              image.push()
-              image.push(base)
-              image.push(major)
-              image.push(minor)
-              image.push(patch)
-            }
-          }
+          setTags()
+          removeDockerhubImages()
+          buildImage('3.11', 'v0.9.8', 'v0.13.8')
         }
         script {
           withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
@@ -171,3 +92,34 @@ pipeline {
     }
   }
  }
+
+ void setTags() {
+  gitbranch = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
+  def version = readFile('VERSION')
+  def versions = version.split('\\.')
+  base = gitbranch
+  major = gitbranch + '-' + versions[0]
+  minor = gitbranch + '-' + versions[0] + '.' + versions[1]
+  patch = gitbranch + '-' + version.trim()
+}
+
+void removeDockerhubImages() {
+  withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
+    docker.image("$registry_remove:latest").withRun('-v "$PWD:/data"', "--user $DOCKERHUB_USERNAME --password '$DOCKERHUB_PASSWORD' $registry:$base $registry:$major $registry:$minor $registry:$patch") { c ->
+      sh "docker logs ${c.id} -f"
+      }
+  }
+}
+
+void buildImage(String baseImageVersion, String rtorrentVersion, String libtorrentVersion) {
+docker.withRegistry('', registryCredential) {
+    withCredentials([string(credentialsId: 'maxind', variable: 'MAXMIND_LICENSE_KEY')]) {
+      def image = docker.build("$registry:$gitbranch",  "--build-arg BASEIMAGE_VERSION=$baseImageVersion --build-arg RTORRENT_VER=$rtorrentVersion --build-arg LIBTORRENT_VER=$libtorrentVersion --build-arg MAXMIND_LICENSE_KEY=${MAXMIND_LICENSE_KEY} -f Dockerfile .")
+      image.push()
+      image.push(base)
+      image.push(major)
+      image.push(minor)
+      image.push(patch)
+    }
+  }
+}
