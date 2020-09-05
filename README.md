@@ -6,14 +6,14 @@ A repository for creating a docker container including rtorrent with rutorrent a
 [![](https://images.microbadger.com/badges/image/romancin/rutorrent-flood.svg)](https://microbadger.com/images/romancin/rutorrent-flood "Docker image size")
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=X2CT2SWQCP74U)
 
-You can invite me a beer if you want ;) 
+You can invite me a beer if you want ;)
 
 ## Description
 
-This is a completely funcional Docker image with flood, rutorrent, rtorrent, libtorrent and a lot of plugins 
+This is a completely funcional Docker image with flood, rutorrent, rtorrent, libtorrent and a lot of plugins
 for rutorrent, like autodl-irssi, filemanager, fileshare and other useful ones.
 
-Based on Alpine Linux, which provides a very small size. 
+Based on Alpine Linux, which provides a very small size.
 
 Includes plugins: logoff fileshare filemanager pausewebui mobile ratiocolor force_save_session showip ...
 
@@ -30,16 +30,16 @@ Tested and working on Synology and QNAP, but should work on any x86_64 devices.
 ## Instructions
 - Map any local port to 80 for rutorrent access (Default username/password is admin/admin)
 - Map any local port to 443 for SSL rutorrent access if SSL_ENABLED=yes (Default username/password is admin/admin)
-- Map any local port to 51415 for rtorrent 
+- Map any local port to 51415 for rtorrent
 - Map any local port to 3000 for SSL flood access
-- Map a local volume to /config (Stores configuration data, including rtorrent session directory. Consider this on SSD Disk) 
+- Map a local volume to /config (Stores configuration data, including rtorrent session directory. Consider this on SSD Disk)
 - Map a local volume to /downloads (Stores downloaded torrents)
 
-In order to change rutorrent web access password execute this inside container: 
+In order to change rutorrent web access password execute this inside container:
 - `sh -c "echo -n 'admin:' > /config/nginx/.htpasswd"`
 - `sh -c "libressl passwd -apr1 >> /config/nginx/.htpasswd"`
 
-**IMPORTANT** 
+**IMPORTANT**
 - In newer versions of flood it is needed to specify how is the connection to rtorrent established in the first user creation window. Specify "Unix Socket" type and "/run/php/.rtorrent.sock" in the rTorrent Socket field.
 - Since v1.0.0 version, rtorrent.rc file has changed completely, so rename it before starting with the new image the first time. After first run, add the changes you need to this config file. It is on <YOUR_MAPPED_FOLDER>/rtorrent directory.
 - Since v2.0.0 version, config.php of rutorrent has added new utilities, so rename it before starting with the new image the first time. After first run, add the changes you need to this config file. It is on <YOUR_MAPPED_FOLDER>/rutorrent/settings directory.
@@ -47,7 +47,7 @@ In order to change rutorrent web access password execute this inside container:
 ## Sample run command
 
 For rtorrent 0.9.8 version:
- 
+
  ```bash
 docker run -d --name=rutorrent-flood \
 -v /share/Container/rutorrent-flood/config:/config \
@@ -60,7 +60,7 @@ romancin/rutorrent-flood:latest
 ```
 
 For rtorrent 0.9.7 version:
- 
+
  ```bash
 docker run -d --name=rutorrent-flood \
 -v /share/Container/rutorrent-flood/config:/config \
@@ -111,6 +111,7 @@ Remember editing `/config/rtorrent/rtorrent.rc` with your own settings, especial
 | `-e SSL_ENABLED=YES` | YES to enable SSL in nginx/flood or NO to not use it (DEFAULT) |
 | `-e RT_TOKEN=your_bot_token` | for your Telegram BOT Token - [see rtelegram documentation for instructions](https://github.com/pyed/rtelegram/wiki/Getting-started). If not used, rtelegram won't start on boot. |
 | `-e RT_MASTERS=your_real_telegram_username` | for your Telegram real username - [see rtelegram documentation for instructions](https://github.com/pyed/rtelegram/wiki/Getting-started). If not used, rtelegram won't start on boot. |
+| `-e RT_COMPLETED=completed_torrents_log_file_name` | log file should be placed in /config/log/rutorrent/ - [see rtelegram documentation for instructions](https://github.com/pyed/rtelegram/wiki/Notifications). |
 
 ## User / Group Identifiers
 
@@ -142,7 +143,7 @@ v2.1.0 (10/08/2019): Fixed cloudflare plugin. New 0.9.7 branch. Master branch up
 
 v2.0.1 (29/04/2019): Added GeoIP2 plugin.
 
-v2.0 (28/04/2019): Updated image to rutorrent 3.9. For the first time, I have eliminated the creation of subfolder directories for trackers by default. Since this moment, you can choose to create them using CREATE_SUBDIR_BY_TRACKERS variable. 
+v2.0 (28/04/2019): Updated image to rutorrent 3.9. For the first time, I have eliminated the creation of subfolder directories for trackers by default. Since this moment, you can choose to create them using CREATE_SUBDIR_BY_TRACKERS variable.
 
 v1.0.1 (28/03/2019): curl 7.64.0 version has an issue that causes very high CPU usage in rtorrent. This version should fix this behaviour.
 
