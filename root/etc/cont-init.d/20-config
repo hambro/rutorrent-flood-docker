@@ -32,6 +32,10 @@ if [ -n $RT_COMPLETED ] && ! [ -f "config/rtorrent/notify_telegram.sh" ]
 then
   echo "#!/bin/sh" > /config/rtorrent/notify_telegram.sh
   echo "echo \$1>>$RT_COMPLETED"  >> /config/rtorrent/notify_telegram.sh
+  if ! [ -f $RT_COMPLETED ]
+  then
+    echo "" > $RT_COMPLETED
+  fi
 fi
 
 # copy config
