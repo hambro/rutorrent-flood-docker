@@ -12,7 +12,7 @@ services:
       environment:
         - PUID=0
         - PGID=0
-        - TZ=Europe/Madrid
+        - TZ=Europe/Kiev
         - CREATE_SUBDIR_BY_TRACKERS=NO
         - SSL_ENABLED=NO
         - RT_TOKEN=

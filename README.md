@@ -111,7 +111,7 @@ Remember editing `/config/rtorrent/rtorrent.rc` with your own settings, especial
 | `-e SSL_ENABLED=YES` | YES to enable SSL in nginx/flood or NO to not use it (DEFAULT) |
 | `-e RT_TOKEN=your_bot_token` | for your Telegram BOT Token - [see rtelegram documentation for instructions](https://github.com/pyed/rtelegram/wiki/Getting-started). If not used, rtelegram won't start on boot. |
 | `-e RT_MASTERS=your_real_telegram_username` | for your Telegram real username - [see rtelegram documentation for instructions](https://github.com/pyed/rtelegram/wiki/Getting-started). If not used, rtelegram won't start on boot. |
-| `-e RT_COMPLETED=completed_torrents_log_file_name` | log file should be placed in /config/log/rutorrent/ - [see rtelegram documentation for instructions](https://github.com/pyed/rtelegram/wiki/Notifications). |
+| `-e RT_COMPLETED=completed_torrents_log_file_name` | path to completed downloads file. Leave empty is you won't receive telegram notifications  - [see rtelegram documentation for instructions](https://github.com/pyed/rtelegram/wiki/Notifications). |
 
 ## User / Group Identifiers
 
