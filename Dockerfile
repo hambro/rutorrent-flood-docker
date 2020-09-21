@@ -71,7 +71,11 @@ RUN NB_CORES=${BUILD_CORES-`getconf _NPROCESSORS_CONF`} && \
         php7-bcmath \
         php7-session \
         python \
-        python3 && \
+        python3 \
+        zip \
+        unzip \
+        tar \
+        bzip2 && \
 # install build packages
  apk add --no-cache --virtual=build-dependencies \
         autoconf \
@@ -117,6 +121,12 @@ ldconfig /usr/bin && ldconfig /usr/lib && \
 # QuickBox Theme
 git clone https://github.com/QuickBox/club-QuickBox /usr/share/webapps/rutorrent/plugins/theme/themes/club-QuickBox && \
 git clone https://github.com/Phlooo/ruTorrent-MaterialDesign /usr/share/webapps/rutorrent/plugins/theme/themes/MaterialDesign && \
+# install rar
+wget -O rarlinux.tar.gz https://www.rarlab.com/rar/rarlinux-x64-5.9.1.tar.gz && \
+tar -xzvf rarlinux.tar.gz && \
+rm rarlinux.tar.gz && \
+mv -v rar/rar /usr/bin/rar && \
+chmod 755 /usr/bin/rar && \
 # ruTorrent plugins
 cd /usr/share/webapps/rutorrent/plugins/ && \
 git clone https://github.com/orobardet/rutorrent-force_save_session force_save_session && \

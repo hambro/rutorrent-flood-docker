@@ -125,6 +125,9 @@ In this instance `PUID=1000` and `PGID=1000`, to find yours use `id user` as bel
 ```
 
 ## Changelog
+
+v4.0.6 (21/09/2020): Added zip, unzip, tar, bzip2 and rar for Filemanager plugin
+
 v4.0.5 (05/09/2020): Added completed downloads notifications via rTelegram bot
 
 v4.0.4 (04/07/2020): Updated to Alpine 3.11 and latest package versions
