@@ -19,6 +19,16 @@ pipeline {
         cleanWs()
         }
     }
+    stage ('Docker prune') {
+      when {
+        expression {
+          params.DOCKER_PRUNE == 'Yes'
+          }
+      }
+      steps {
+        sh "docker system prune -f -a"
+      }
+    }
     stage('Cloning Git Repository') {
       steps {
         git url: 'https://github.com/Bryzgalin/rutorrent-flood-docker.git',
@@ -115,10 +125,6 @@ void buildImage(String baseImageVersion, String rtorrentVersion, String libtorre
 docker.withRegistry('', registryCredential) {
     withCredentials([string(credentialsId: 'maxind', variable: 'MAXMIND_LICENSE_KEY')]) {
       def image = docker.build("$registry:$gitbranch",  "--build-arg BASEIMAGE_VERSION=$baseImageVersion --build-arg RTORRENT_VER=$rtorrentVersion --build-arg LIBTORRENT_VER=$libtorrentVersion --build-arg MAXMIND_LICENSE_KEY=${MAXMIND_LICENSE_KEY} -f Dockerfile .")
-      image.push()
-      image.push(base)
-      image.push(major)
-      image.push(minor)
       image.push(patch)
     }
   }
