@@ -27,7 +27,7 @@ ENV SSL_ENABLED="no"
 # run commands
 RUN NB_CORES=${BUILD_CORES-`getconf _NPROCESSORS_CONF`} && \
  apk add --no-cache \
-	bash-completion \
+        bash-completion \
         ca-certificates \
         fcgi \
         ffmpeg \
@@ -70,7 +70,6 @@ RUN NB_CORES=${BUILD_CORES-`getconf _NPROCESSORS_CONF`} && \
         php7-zip \
         php7-bcmath \
         php7-session \
-        python \
         python3 \
         zip \
         unzip \
