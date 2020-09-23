@@ -126,6 +126,8 @@ In this instance `PUID=1000` and `PGID=1000`, to find yours use `id user` as bel
 
 ## Changelog
 
+v4.2.6 (23/09/2020): Updated to Alpine 3.12
+
 v4.1.6 (22/09/2020): Switched to active Flood fork
 
 v4.0.6 (21/09/2020): Added zip, unzip, tar, bzip2 and rar for Filemanager plugin

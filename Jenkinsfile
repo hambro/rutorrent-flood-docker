@@ -91,7 +91,7 @@ pipeline {
         script {
           setTags()
           removeDockerhubImages()
-          buildImage('3.11', 'v0.9.8', 'v0.13.8')
+          buildImage('3.12', 'v0.9.8', 'v0.13.8')
         }
         script {
           withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
