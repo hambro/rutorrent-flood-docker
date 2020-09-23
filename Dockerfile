@@ -228,7 +228,7 @@ rm -rf \
 
 # install flood webui
 RUN apk add --no-cache \
-      python \
+      python3 \
       nodejs-current \
       nodejs-npm && \
     apk add --no-cache --virtual=build-dependencies \
