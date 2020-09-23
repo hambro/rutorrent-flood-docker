@@ -71,6 +71,7 @@ RUN NB_CORES=${BUILD_CORES-`getconf _NPROCESSORS_CONF`} && \
         php7-bcmath \
         php7-session \
         python3 \
+        py3-pip \
         zip \
         unzip \
         tar \
