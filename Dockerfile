@@ -236,7 +236,7 @@ RUN apk add --no-cache \
     mkdir /usr/flood && \
     cd /usr/flood && \
     git clone https://github.com/jesec/flood . && \
-    cp config.cli.js config.js && \
+#    cp config.cli.js config.js && \
     npm config set unsafe-perm true && \
     npm install --prefix /usr/flood && \
     npm cache clean --force && \
