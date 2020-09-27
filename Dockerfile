@@ -241,11 +241,11 @@ RUN apk add --no-cache \
     cd /usr/flood && \
     git clone https://github.com/jesec/flood . && \
 #    cp config.cli.js config.js && \
-    s6-setuidgid abc npm config set unsafe-perm true && \
-    s6-setuidgid abc npm install --prefix /usr/flood && \
-    s6-setuidgid abc npm cache clean --force && \
-    s6-setuidgid abc npm run build && \
-    s6-setuidgid abc npm prune --production && \
+    npm config set unsafe-perm true && \
+    npm install --prefix /usr/flood && \
+    npm cache clean --force && \
+    npm run build && \
+    npm prune --production && \
     rm config.js && \
     apk del --purge build-dependencies && \
     rm -rf /root \
