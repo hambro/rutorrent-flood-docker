@@ -46,9 +46,12 @@ RUN NB_CORES=${BUILD_CORES-`getconf _NPROCESSORS_CONF`} && \
         tar \
         unrar \
         unzip \
+        zip \
+        bzip2 \
         sox \
         wget \
         irssi \
+        nano \
         irssi-perl \
         zlib \
         zlib-dev \
@@ -60,7 +63,6 @@ RUN NB_CORES=${BUILD_CORES-`getconf _NPROCESSORS_CONF`} && \
         libressl \
         binutils \
         findutils \
-        zip \
         php7 \
         php7-cgi \
         php7-fpm \
@@ -77,11 +79,7 @@ RUN NB_CORES=${BUILD_CORES-`getconf _NPROCESSORS_CONF`} && \
         php7-bcmath \
         php7-session \
         python3 \
-        py3-pip \
-        zip \
-        unzip \
-        tar \
-        bzip2 && \
+        py3-pip && \
 # install build packages
  apk add --no-cache --virtual=build-dependencies \
         autoconf \
