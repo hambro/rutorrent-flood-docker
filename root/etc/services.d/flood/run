@@ -2,4 +2,4 @@
 
 cd /usr/flood || exit
 
-su abc -c "npm start"
+su abc -c "flood"

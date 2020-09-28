@@ -240,15 +240,16 @@ RUN apk add --no-cache \
     mkdir /usr/flood && \
     cd /usr/flood && \
     git clone https://github.com/jesec/flood . && \
-#    cp config.cli.js config.js && \
     npm config set unsafe-perm true && \
     npm install --prefix /usr/flood && \
     npm cache clean --force && \
     npm run build && \
+    npm install -g flood && \
     npm prune --production && \
-    rm config.js && \
+    rm /usr/lib/node_modules/flood/config.js && \
     apk del --purge build-dependencies && \
     rm -rf /root \
+           /usr/flood \
            /tmp/* && \
     ln -s /usr/local/bin/mediainfo /usr/bin/mediainfo
 

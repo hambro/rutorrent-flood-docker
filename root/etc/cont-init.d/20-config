@@ -101,7 +101,6 @@ chown -R abc:abc \
   /run \
   /usr/share/webapps/rutorrent \
   /var/lib/nginx \
-  /usr/flood \
   /var/www/localhost/rutorrent
 
 chmod -R 755 /config/rutorrent/profiles

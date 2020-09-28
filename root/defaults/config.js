@@ -5,8 +5,9 @@ const CONFIG = {
   floodServerPort: 3000,
   maxHistoryStates: 30,
   pollInterval: 1000 * 5,
-  secret: 'flood',
-  scgi: {
+  secret: '<FLOOD_SECRET>',
+  disableUsersAndAuth: true,
+  configUser: {
     host: 'localhost',
     port: 5000,
     socket: true,
