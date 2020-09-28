@@ -1,5 +1,3 @@
 #!/usr/bin/with-contenv bash
 
-cd /usr/flood || exit
-
 su abc -c "flood"
