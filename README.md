@@ -3,8 +3,7 @@
 This is a fork of https://github.com/romancin/rutorrent-flood-docker
 
 Difference from original:
-- Added RT_COMPLETED environment variable to get notifications about completed downloads via rTelegram bot.
-- Removed creation the following folders: /downloads/completed, /downloads/watch.
+- See changes starting from v4.0.5 and above
 
 ## Description
 
@@ -130,7 +129,7 @@ v4.2.7 (27/09/2020): Fixed Flood start
 
 v4.2.6 (23/09/2020): Updated to Alpine 3.12
 
-v4.1.6 (22/09/2020): Switched to active Flood fork
+v4.1.6 (22/09/2020): Switched to active Flood fork: Switched to active Flood fork: https://github.com/jesec/flood.git
 
 v4.0.6 (21/09/2020): Added zip, unzip, tar, bzip2 and rar for Filemanager plugin
 
