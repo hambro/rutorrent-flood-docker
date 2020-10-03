@@ -2,6 +2,18 @@
 
 This is a fork of https://github.com/romancin/rutorrent-flood-docker
 
+What inside:
+- [rtorrent](http://rakshasa.github.io/rtorrent/)
+- [ruTorrent](https://github.com/Novik/ruTorrent)
+
+[<img width="800" src="https://github.com/Novik/ruTorrent/wiki/images/scr1_big.jpg" />](https://github.com/Novik/ruTorrent/wiki/images/scr1_big.jpg)
+- [Flood](https://github.com/jesec/flood)
+
+[<img width="800" src="https://s3.amazonaws.com/johnfurrow.com/share/flood-screenshots-a.png" />](https://s3.amazonaws.com/johnfurrow.com/share/flood-screenshots-a.png)
+- [Telegram bot](https://github.com/pyed/rtelegram)
+
+[<img width="400" src="https://raw.githubusercontent.com/pyed/rtelegram/master/demo.gif" />](https://raw.githubusercontent.com/pyed/rtelegram/master/demo.gif)
+
 Difference from original:
 - See changes starting from v4.0.5 and above
 
