@@ -246,7 +246,6 @@ RUN apk add --no-cache \
     npm run build && \
     npm install -g flood && \
     npm prune --production && \
-    rm /usr/lib/node_modules/flood/config.js && \
     apk del --purge build-dependencies && \
     rm -rf /root \
            /usr/flood \
