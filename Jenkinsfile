@@ -1,16 +1,37 @@
 pipeline {
   environment {
-    registry = "romancin/rutorrent-flood"
-    repository = "rutorrent-flood"
+    registry = 'ibryzg/rutorrent-flood'
+    registry_remove = 'lumir/remove-dockerhub-tag'
+    repository = 'rutorrent-flood'
     withCredentials = 'dockerhub'
     registryCredential = 'dockerhub'
-    MAXMIND_LICENSE_KEY = credentials('maxmind-license-key')
+
+    gitbranch = ''
+    base = ''
+    major = ''
+    minor = ''
+    patch = ''
   }
-  agent any
+  agent { label 'Alpine' }
   stages {
+    stage('Clean Workspace') {
+      steps {
+        cleanWs()
+        }
+    }
+    stage ('Docker prune') {
+      when {
+        expression {
+          params.DOCKER_PRUNE == 'Yes'
+          }
+      }
+      steps {
+        sh "docker system prune -f -a"
+      }
+    }
     stage('Cloning Git Repository') {
       steps {
-        git url: 'https://github.com/romancin/rutorrent-flood-docker.git',
+        git url: 'https://github.com/Bryzgalin/rutorrent-flood-docker.git',
             branch: '$BRANCH_NAME'
       }
     }
@@ -20,21 +41,9 @@ pipeline {
         }
       steps {
         script {
-          def gitbranch = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
-          def version = readFile('VERSION')
-          def versions = version.split('\\.')
-          def base = gitbranch
-          def major = gitbranch + '-' + versions[0]
-          def minor = gitbranch + '-' + versions[0] + '.' + versions[1]
-          def patch = gitbranch + '-' + version.trim()
-          docker.withRegistry('', registryCredential) {
-            def image = docker.build("$registry:$gitbranch",  "--build-arg BASE_IMAGE=romancin/rutorrent:develop -f Dockerfile .")
-            image.push()
-            image.push(base)
-            image.push(major)
-            image.push(minor)
-            image.push(patch)
-            }
+          setTags()
+          removeDockerhubImages()
+          buildImage('3.12', 'v0.9.8', 'v0.13.8')
         }
       }
     }
@@ -44,20 +53,9 @@ pipeline {
         }
       steps {
         script {
-          def version = readFile('VERSION')
-          def versions = version.split('\\.')
-          def base = '0.9.8'
-          def major = '0.9.8-' + versions[0]
-          def minor = '0.9.8-' + versions[0] + '.' + versions[1]
-          def patch = '0.9.8-' + version.trim()
-          docker.withRegistry('', registryCredential) {
-            def image = docker.build("$registry:latest", "--build-arg BASE_IMAGE=romancin/rutorrent:latest -f Dockerfile .")
-            image.push()
-            image.push(base)
-            image.push(major)
-            image.push(minor)
-            image.push(patch)
-            }
+          setTags()
+          removeDockerhubImages()
+          buildImage('3.12', 'v0.9.8', 'v0.13.8')
         }
         script {
           withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
@@ -67,9 +65,31 @@ pipeline {
       }
     }
   }
-  post {
-        success {
-            telegramSend '[Jenkins] - Pipeline CI-rutorrent-flood-docker $BUILD_URL finalizado con estado :: $BUILD_STATUS'
-        }
-  }
  }
+
+ void setTags() {
+  gitbranch = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
+  def version = readFile('VERSION')
+  def versions = version.split('\\.')
+  base = gitbranch
+  major = gitbranch + '-' + versions[0]
+  minor = gitbranch + '-' + versions[0] + '.' + versions[1]
+  patch = gitbranch + '-' + version.trim()
+}
+
+void removeDockerhubImages() {
+  withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
+    docker.image("$registry_remove:latest").withRun('-v "$PWD:/data"', "--user $DOCKERHUB_USERNAME --password '$DOCKERHUB_PASSWORD' $registry:$base $registry:$major $registry:$minor $registry:$patch") { c ->
+      sh "docker logs ${c.id} -f"
+      }
+  }
+}
+
+void buildImage(String baseImageVersion, String rtorrentVersion, String libtorrentVersion) {
+docker.withRegistry('', registryCredential) {
+    withCredentials([string(credentialsId: 'maxind', variable: 'MAXMIND_LICENSE_KEY')]) {
+      def image = docker.build("$registry:$gitbranch",  "--build-arg BASEIMAGE_VERSION=$baseImageVersion --build-arg RTORRENT_VER=$rtorrentVersion --build-arg LIBTORRENT_VER=$libtorrentVersion --build-arg MAXMIND_LICENSE_KEY=${MAXMIND_LICENSE_KEY} -f Dockerfile .")
+      image.push(patch)
+    }
+  }
+}
