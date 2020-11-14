@@ -35,7 +35,7 @@ pipeline {
             branch: '$BRANCH_NAME'
       }
     }
-    stage('Building image and pushing it to the registry (master)') {
+    stage('Building image and pushing it to the registry (test)') {
       when{
         branch 'test'
         }
