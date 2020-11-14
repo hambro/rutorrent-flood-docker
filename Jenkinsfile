@@ -35,15 +35,20 @@ pipeline {
             branch: '$BRANCH_NAME'
       }
     }
-    stage('Building image and pushing it to the registry (develop)') {
+    stage('Building image and pushing it to the registry (master)') {
       when{
-        branch 'develop'
+        branch 'test'
         }
       steps {
         script {
           setTags()
           removeDockerhubImages()
           buildImage('3.12', 'v0.9.8', 'v0.13.8')
+        }
+        script {
+          withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
+          docker.image('sheogorath/readme-to-dockerhub').run('-v $PWD:/data -e DOCKERHUB_USERNAME=$DOCKERHUB_USERNAME -e DOCKERHUB_PASSWORD=$DOCKERHUB_PASSWORD -e DOCKERHUB_REPO_NAME=$repository')
+          }
         }
       }
     }
