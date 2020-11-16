@@ -226,6 +226,7 @@ rm -rf \
         /tmp/*
 
 # add local files
+COPY root/ /
 COPY VERSION /
 
 # ports and volumes
