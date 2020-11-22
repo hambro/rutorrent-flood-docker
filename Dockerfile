@@ -226,7 +226,8 @@ rm -rf \
         /tmp/*
 
 # install flood webui
-RUN apk add --no-cache \
+RUN NB_CORES=${BUILD_CORES-`getconf _NPROCESSORS_CONF`} && \
+    apk add --no-cache \
       nodejs \
       nodejs-npm && \
     apk add --no-cache --virtual=build-dependencies \
