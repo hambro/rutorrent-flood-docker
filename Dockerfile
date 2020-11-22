@@ -10,8 +10,8 @@ ARG BUILD_CORES
 LABEL build_version="Romancin version:- ${VERSION} Build-date:- ${BUILD_DATE}"
 
 # package version
-ARG MEDIAINF_VER="20.03"
-ARG CURL_VER="7.71.0"
+ARG MEDIAINF_VER="20.09"
+ARG CURL_VER="7.73.0"
 ARG GEOIP_VER="1.1.1"
 ARG RTORRENT_VER
 ARG LIBTORRENT_VER
@@ -22,13 +22,12 @@ ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
 ENV LD_LIBRARY_PATH=/usr/local/lib
 ENV CONTEXT_PATH=/
 ENV CREATE_SUBDIR_BY_TRACKERS="no"
-ENV SSL_ENABLED="no"
-ENV TZ=Europe/Kiev
+ENV SSL_ENABLED="YES"
 ENV PUID=
 ENV PGID=
 ENV RT_MASTERS=
 ENV RT_TOKEN=
-ENV RT_COMPLETED=
+ENV RT_COMPLETED=/config/log/rtorrent/rtorrent_completed.log
 
 # run commands
 RUN NB_CORES=${BUILD_CORES-`getconf _NPROCESSORS_CONF`} && \
@@ -179,11 +178,10 @@ echo ";extension=geoip.so" >> /etc/php7/php.ini && \
         cpanm HTML::Entities XML::LibXML JSON JSON::XS && \
 # compile xmlrpc-c
 cd /tmp && \
-svn checkout http://svn.code.sf.net/p/xmlrpc-c/code/stable xmlrpc-c && \
-cd /tmp/xmlrpc-c && \
+git clone https://github.com/mirror/xmlrpc-c.git && \
+cd /tmp/xmlrpc-c/stable && \
 ./configure --with-libwww-ssl --disable-wininet-client --disable-curl-client --disable-libwww-client --disable-abyss-server --disable-cgi-server && make -j ${NB_CORES} && make install && \
 # compile libtorrent
-if [ "$RTORRENT_VER" == "v0.9.4" ] || [ "$RTORRENT_VER" == "v0.9.6" ]; then apk add -X http://dl-cdn.alpinelinux.org/alpine/v3.6/main -U cppunit-dev==1.13.2-r1 cppunit==1.13.2-r1; fi && \
 cd /tmp && \
 mkdir libtorrent && \
 cd libtorrent && \
@@ -221,34 +219,28 @@ cd /tmp/mediainfo/MediaInfo/Project/GNU/CLI && \
         make install && \
 # compile and install rtelegram
 GOPATH=/usr go get -u github.com/pyed/rtelegram && \
-# create libressl link to openssl for old alpine images
-if [ "$RTORRENT_VER" == "v0.9.4" ] || [ "$RTORRENT_VER" == "v0.9.6" ] || [ "$RTORRENT_VER" == "v0.9.7" ]; then ln -s /usr/bin/openssl /usr/bin/libressl; fi && \
 # cleanup
 apk del --purge \
         build-dependencies && \
-if [ "$RTORRENT_VER" == "v0.9.4" ] || [ "$RTORRENT_VER" == "v0.9.6" ]; then apk del -X http://dl-cdn.alpinelinux.org/alpine/v3.6/main cppunit-dev; fi && \
 rm -rf \
         /tmp/*
 
 # install flood webui
 RUN apk add --no-cache \
-      python3 \
-      nodejs-current \
+      nodejs \
       nodejs-npm && \
     apk add --no-cache --virtual=build-dependencies \
       build-base && \
     mkdir /usr/flood && \
     cd /usr/flood && \
-    git clone https://github.com/jesec/flood . && \
+    git clone https://github.com/jesec/flood.git .&& \
     npm set unsafe-perm true && \
     npm install --prefix /usr/flood && \
-    npm cache clean --force && \
     npm run build && \
-    npm install -g flood && \
     npm prune --production && \
+    rm config.js && \
     apk del --purge build-dependencies && \
     rm -rf /root \
-           /usr/flood \
            /tmp/* && \
     ln -s /usr/local/bin/mediainfo /usr/bin/mediainfo
 

@@ -35,51 +35,20 @@ pipeline {
             branch: '$BRANCH_NAME'
       }
     }
-    stage('Building image and pushing it to the registry (rtorrent/libtorrent 0.9.4)') {
+    stage('Building image and pushing it to the registry (test)') {
       when{
-        branch '0.9.4'
+        branch 'test'
         }
       steps {
         script {
           setTags()
           removeDockerhubImages()
-          buildImage('3.8', 'v0.9.4', 'v0.13.4')
+          buildImage('3.12', 'v0.9.8', 'v0.13.8')
         }
-      }
-    }
-    stage('Building image and pushing it to the registry (rtorrent/libtorrent 0.9.6)') {
-      when{
-        branch '0.9.6'
-        }
-      steps {
         script {
-          setTags()
-          removeDockerhubImages()
-          buildImage('3.8', 'v0.9.6', 'v0.13.6')
-        }
-      }
-    }
-    stage('Building image and pushing it to the registry (rtorrent/libtorrent 0.9.7)') {
-      when{
-        branch '0.9.7'
-        }
-      steps {
-        script {
-          setTags()
-          removeDockerhubImages()
-          buildImage('3.8', 'v0.9.7', 'v0.13.7')
-        }
-      }
-    }
-    stage('Building image and pushing it to the registry (develop)') {
-      when{
-        branch 'develop'
-        }
-      steps {
-        script {
-          setTags()
-          removeDockerhubImages()
-          buildImage('3.11', 'v0.9.8', 'v0.13.8')
+          withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
+          docker.image('sheogorath/readme-to-dockerhub').run('-v $PWD:/data -e DOCKERHUB_USERNAME=$DOCKERHUB_USERNAME -e DOCKERHUB_PASSWORD=$DOCKERHUB_PASSWORD -e DOCKERHUB_REPO_NAME=$repository')
+          }
         }
       }
     }
