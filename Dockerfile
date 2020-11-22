@@ -227,22 +227,20 @@ rm -rf \
 
 # install flood webui
 RUN apk add --no-cache \
-      python3 \
-      nodejs-current \
+      nodejs \
       nodejs-npm && \
     apk add --no-cache --virtual=build-dependencies \
       build-base && \
     mkdir /usr/flood && \
     cd /usr/flood && \
-    git clone https://github.com/jesec/flood . && \
-    npm i node-musl && \
-    npm i -g pkg && \
-    npm run build-pkg && \
+    git clone https://github.com/jesec/flood.git .&& \
+    npm set unsafe-perm true && \
+    npm install --prefix /usr/flood && \
+    npm run build && \
+    npm prune --production && \
+    rm config.js && \
     apk del --purge build-dependencies && \
-    cp ./dist-pkg/flood-linux /usr/local/bin/flood && \
-    chmod +x /usr/local/bin/flood && \
     rm -rf /root \
-           /usr/flood \
            /tmp/* && \
     ln -s /usr/local/bin/mediainfo /usr/bin/mediainfo
 
