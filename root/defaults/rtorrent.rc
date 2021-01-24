@@ -104,67 +104,6 @@ encoding.add = utf8
 schedule2 = watch_directory_99,10,10,(cat,"load.start=",(cfg.watch),"*.torrent,d.custom1.set=/downloads/completed/")
 #schedule2 = untied_directory, 5, 5, (cat,"stop_untied=",(cfg.watch),"*.torrent")
 
-# watch subdirectory by tracker
-schedule2 = watch_directory_1,10,10,(cat,"load.start=",(cfg.watch),"/bajaunapeli/*.torrent,d.directory.set=/downloads/bajaunapeli/")
-schedule2 = watch_directory_2,10,10,(cat,"load.start=",(cfg.watch),"/bitspyder/*.torrent,d.directory.set=/downloads/bitspyder/")
-schedule2 = watch_directory_3,10,10,(cat,"load.start=",(cfg.watch),"/torrentfactory/*.torrent,d.directory.set=/downloads/torrentfactory/")
-schedule2 = watch_directory_4,10,10,(cat,"load.start=",(cfg.watch),"/hachede/*.torrent,d.directory.set=/downloads/hachede/")
-schedule2 = watch_directory_5,10,10,(cat,"load.start=",(cfg.watch),"/hdcity/*.torrent,d.directory.set=/downloads/hdcity/")
-schedule2 = watch_directory_6,10,10,(cat,"load.start=",(cfg.watch),"/learnflakes/*.torrent,d.directory.set=/downloads/learnflakes/")
-schedule2 = watch_directory_7,10,10,(cat,"load.start=",(cfg.watch),"/puntotorrent/*.torrent,d.directory.set=/downloads/puntotorrent/")
-schedule2 = watch_directory_8,10,10,(cat,"load.start=",(cfg.watch),"/tbplus/*.torrent,d.directory.set=/downloads/tbplus/")
-schedule2 = watch_directory_9,10,10,(cat,"load.start=",(cfg.watch),"/waffles/*.torrent,d.directory.set=/downloads/waffles/")
-schedule2 = watch_directory_11,10,10,(cat,"load.start=",(cfg.watch),"/xbytes/*.torrent,d.directory.set=/downloads/xbytes/")
-schedule2 = watch_directory_12,10,10,(cat,"load.start=",(cfg.watch),"/otros/*.torrent,d.directory.set=/downloads/otros/")
-schedule2 = watch_directory_13,10,10,(cat,"load.start=",(cfg.watch),"/pedros/*.torrent,d.directory.set=/downloads/pedros/")
-schedule2 = watch_directory_14,10,10,(cat,"load.start=",(cfg.watch),"/cinemaggedon/*.torrent,d.directory.set=/downloads/cinemaggedon/")
-schedule2 = watch_directory_15,10,10,(cat,"load.start=",(cfg.watch),"/torrentland/*.torrent,d.directory.set=/downloads/torrentland/")
-schedule2 = watch_directory_16,10,10,(cat,"load.start=",(cfg.watch),"/tunetraxx/*.torrent,d.directory.set=/downloads/tunetraxx/")
-schedule2 = watch_directory_17,10,10,(cat,"load.start=",(cfg.watch),"/brokenstones/*.torrent,d.directory.set=/downloads/brokenstones/")
-schedule2 = watch_directory_18,10,10,(cat,"load.start=",(cfg.watch),"/32pages/*.torrent,d.directory.set=/downloads/32pages/")
-schedule2 = watch_directory_19,10,10,(cat,"load.start=",(cfg.watch),"/lztr/*.torrent,d.directory.set=/downloads/lztr/")
-schedule2 = watch_directory_20,10,10,(cat,"load.start=",(cfg.watch),"/p2pelite/*.torrent,d.directory.set=/downloads/p2pelite/")
-schedule2 = watch_directory_21,10,10,(cat,"load.start=",(cfg.watch),"/bitgamer/*.torrent,d.directory.set=/downloads/bitgamer/")
-schedule2 = watch_directory_22,10,10,(cat,"load.start=",(cfg.watch),"/psytorrents/*.torrent,d.directory.set=/downloads/psytorrents/")
-schedule2 = watch_directory_23,10,10,(cat,"load.start=",(cfg.watch),"/pleasuredome/*.torrent,d.directory.set=/downloads/pleasuredome/")
-schedule2 = watch_directory_24,10,10,(cat,"load.start=",(cfg.watch),"/hdspain/*.torrent,d.directory.set=/downloads/hdspain/")
-schedule2 = watch_directory_25,10,10,(cat,"load.start=",(cfg.watch),"/iptorrents/*.torrent,d.directory.set=/downloads/iptorrents/")
-schedule2 = watch_directory_26,10,10,(cat,"load.start=",(cfg.watch),"/trancetraffic/*.torrent,d.directory.set=/downloads/trancetraffic/")
-schedule2 = watch_directory_27,10,10,(cat,"load.start=",(cfg.watch),"/morethantv/*.torrent,d.directory.set=/downloads/morethantv/")
-schedule2 = watch_directory_28,10,10,(cat,"load.start=",(cfg.watch),"/passthepopcorn/*.torrent,d.directory.set=/downloads/passthepopcorn/")
-schedule2 = watch_directory_29,10,10,(cat,"load.start=",(cfg.watch),"/gp32spain/*.torrent,d.directory.set=/downloads/gp32spain/")
-schedule2 = watch_directory_30,10,10,(cat,"load.start=",(cfg.watch),"/gazellegames/*.torrent,d.directory.set=/downloads/gazellegames/")
-schedule2 = watch_directory_31,10,10,(cat,"load.start=",(cfg.watch),"/opencd/*.torrent,d.directory.set=/downloads/opencd/")
-schedule2 = watch_directory_32,10,10,(cat,"load.start=",(cfg.watch),"/mteam/*.torrent,d.directory.set=/downloads/mteam/")
-schedule2 = watch_directory_33,10,10,(cat,"load.start=",(cfg.watch),"/retrowithin/*.torrent,d.directory.set=/downloads/retrowithin/")
-schedule2 = watch_directory_34,10,10,(cat,"load.start=",(cfg.watch),"/divteam/*.torrent,d.directory.set=/downloads/divteam/")
-schedule2 = watch_directory_35,10,10,(cat,"load.start=",(cfg.watch),"/racingforme/*.torrent,d.directory.set=/downloads/racingforme/")
-schedule2 = watch_directory_36,10,10,(cat,"load.start=",(cfg.watch),"/bibliotik/*.torrent,d.directory.set=/downloads/bibliotik/")
-schedule2 = watch_directory_37,10,10,(cat,"load.start=",(cfg.watch),"/beyondhd/*.torrent,d.directory.set=/downloads/beyondhd/")
-schedule2 = watch_directory_38,10,10,(cat,"load.start=",(cfg.watch),"/myanonamouse/*.torrent,d.directory.set=/downloads/myanonamouse/")
-schedule2 = watch_directory_39,10,10,(cat,"load.start=",(cfg.watch),"/ultimategamer/*.torrent,d.directory.set=/downloads/ultimategamer/")
-schedule2 = watch_directory_40,10,10,(cat,"load.start=",(cfg.watch),"/ultimategamer/*.torrent,d.directory.set=/downloads/ultimategamer/")
-schedule2 = watch_directory_41,10,10,(cat,"load.start=",(cfg.watch),"/x264/*.torrent,d.directory.set=/downloads/x264/")
-schedule2 = watch_directory_42,10,10,(cat,"load.start=",(cfg.watch),"/awesomehd/*.torrent,d.directory.set=/downloads/awesomehd/")
-schedule2 = watch_directory_43,10,10,(cat,"load.start=",(cfg.watch),"/broadcasthenet/*.torrent,d.directory.set=/downloads/broadcasthenet/")
-schedule2 = watch_directory_44,10,10,(cat,"load.start=",(cfg.watch),"/bitme/*.torrent,d.directory.set=/downloads/bitme/")
-schedule2 = watch_directory_45,10,10,(cat,"load.start=",(cfg.watch),"/theplace/*.torrent,d.directory.set=/downloads/theplace/")
-schedule2 = watch_directory_46,10,10,(cat,"load.start=",(cfg.watch),"/theshow/*.torrent,d.directory.set=/downloads/theshow/")
-schedule2 = watch_directory_47,10,10,(cat,"load.start=",(cfg.watch),"/thegeeks/*.torrent,d.directory.set=/downloads/thegeeks/")
-schedule2 = watch_directory_48,10,10,(cat,"load.start=",(cfg.watch),"/thevault/*.torrent,d.directory.set=/downloads/thevault/")
-schedule2 = watch_directory_49,10,10,(cat,"load.start=",(cfg.watch),"/theempire/*.torrent,d.directory.set=/downloads/theempire/")
-schedule2 = watch_directory_50,10,10,(cat,"load.start=",(cfg.watch),"/theoccult/*.torrent,d.directory.set=/downloads/theoccult/")
-schedule2 = watch_directory_51,10,10,(cat,"load.start=",(cfg.watch),"/torrentleech/*.torrent,d.directory.set=/downloads/torrentleech/")
-schedule2 = watch_directory_52,10,10,(cat,"load.start=",(cfg.watch),"/hdbits/*.torrent,d.directory.set=/downloads/hdbits/")
-schedule2 = watch_directory_53,10,10,(cat,"load.start=",(cfg.watch),"/zonaq/*.torrent,d.directory.set=/downloads/zonaq/")
-schedule2 = watch_directory_54,10,10,(cat,"load.start=",(cfg.watch),"/torrentech/*.torrent,d.directory.set=/downloads/torrentech/")
-schedule2 = watch_directory_55,10,10,(cat,"load.start=",(cfg.watch),"/sceneaccess/*.torrent,d.directory.set=/downloads/sceneaccess/")
-schedule2 = watch_directory_56,10,10,(cat,"load.start=",(cfg.watch),"/efectodoppler/*.torrent,d.directory.set=/downloads/efectodoppler/")
-schedule2 = watch_directory_57,10,10,(cat,"load.start=",(cfg.watch),"/musicvids/*.torrent,d.directory.set=/downloads/musicvids/")
-schedule2 = watch_directory_58,10,10,(cat,"load.start=",(cfg.watch),"/apollo/*.torrent,d.directory.set=/downloads/apollo/")
-schedule2 = watch_directory_59,10,10,(cat,"load.start=",(cfg.watch),"/passtheheadphones/*.torrent,d.directory.set=/downloads/passtheheadphones/")
-schedule2 = watch_directory_60,10,10,(cat,"load.start=",(cfg.watch),"/notwhatcd/*.torrent,d.directory.set=/downloads/notwhatcd/")
-
 # Close torrents when diskspace is low
 schedule2 = monitor_diskspace, 15, 60, ((close_low_diskspace,1000M))
 
@@ -180,30 +119,3 @@ schedule2 = session_save,240,300,session_save=
 
 # Telegram Notifications
 #method.set_key = event.download.finished,notify_me,"execute=/config/rtorrent/notify_telegram.sh,$d.name="
-
-#
-# PyroScope SETTINGS
-#
-method.insert = cfg.pyroscope, private|const|string, (cat,"/config/.pyroscope/")
-
-# `system.has` polyfill (the "false=" silences the `catch` command, in rTorrent-PS)
-catch = {"false=", "method.redirect=system.has,false"}
-
-# Set "pyro.extended" to 1 to activate rTorrent-PS features!
-# (the automatic way used here only works with rTorrent-PS builds after 2018-05-30)
-method.insert = pyro.extended, const|value, (system.has, rtorrent-ps)
-
-# Set "pyro.bin_dir" to the "bin" directory where you installed the pyrocore tools!
-# Make sure you end it with a "/"; if this is left empty, then the shell's path is searched.
-method.insert = pyro.bin_dir, string|const, /config/bin/
-
-# Remove the ".default" if you want to change something (else your changes
-# get over-written on update, when you put them into ``*.default`` files).
-#import = ~/.pyroscope/rtorrent-pyro.rc.default
-#execute.throw = (cat,(pyro.bin_dir),pyroadmin),-q,--create-import,(cat,(cfg.pyroscope),"rtorrent.d/*.rc")
-import = (cat,(cfg.pyroscope),"rtorrent.d/.import.rc")
-
-# TORQUE: Daemon watchdog schedule
-# Must be activated by touching the "~/.pyroscope/run/pyrotorque" file!
-# Set the second argument to "-v" or "-q" to change log verbosity.
-schedule = pyro_watchdog,30,300,"pyro.watchdog=~/.pyroscope,"
