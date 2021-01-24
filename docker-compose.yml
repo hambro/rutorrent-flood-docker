@@ -1,14 +1,22 @@
-version: '2'
+version: '3'
 services:
     rutorrent:
-      image: romancin/rutorrent-flood:0.9.8
+      build:
+        dockerfile: Dockerfile
+        context: .
+        args:
+          - MAXMIND_LICENSE_KEY=$MAXMIND_LICENSE_KEY
+          - MAXMIND_USER=$MAXMIND_USER
+          - MAXMIND_PASSWORD=$MAXMIND_PASSWORD
+          - RTORRENT_VER=0.9.8
+          - LIBTORRENT_VER=0.13.8
       container_name: rutorrent-flood
       networks:
         - default
       tty: true
       volumes:
-        - /share/Container/rutorrent-flood:/config
-        - /share/Container/rutorrent-flood/downloads:/downloads
+        - ./rutorrent-conf:/config
+        - ./rutorrent-downloads:/downloads
       environment:
         - PUID=0
         - PGID=0
@@ -20,6 +28,5 @@ services:
         - RT_COMPLETED=/config/log/rtorrent/rtorrent_completed.log
       ports:
         - "8880:80"
-        #- "8443:443"
         - "32316:52316"
         - "3333:3000"
