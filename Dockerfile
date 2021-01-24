@@ -1,20 +1,23 @@
-ARG BASEIMAGE_VERSION
-FROM lsiobase/alpine:$BASEIMAGE_VERSION
+ARG BASEIMAGE_VERSION=3.12
+FROM lsiobase/alpine:3.12
 
 MAINTAINER romancin
 
 # set version label
 ARG BUILD_DATE
-ARG VERSION
-ARG BUILD_CORES
+ARG VERSION=1.0.0
+ARG BUILD_CORES=4
+ARG NB_CORES=4
 LABEL build_version="Romancin version:- ${VERSION} Build-date:- ${BUILD_DATE}"
 
 # package version
 ARG MEDIAINF_VER="20.09"
 ARG CURL_VER="7.73.0"
 ARG GEOIP_VER="1.1.1"
-ARG RTORRENT_VER
-ARG LIBTORRENT_VER
+ARG RTORRENT_VER=0.9.8
+ARG LIBTORRENT_VER=v0.13.8
+ARG MAXMIND_USER
+ARG MAXMIND_PASSWORD
 ARG MAXMIND_LICENSE_KEY
 
 # set env
@@ -22,7 +25,6 @@ ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
 ENV LD_LIBRARY_PATH=/usr/local/lib
 ENV CONTEXT_PATH=/
 ENV CREATE_SUBDIR_BY_TRACKERS="no"
-ENV SSL_ENABLED="YES"
 ENV PUID=
 ENV PGID=
 ENV RT_MASTERS=
@@ -100,9 +102,10 @@ RUN NB_CORES=${BUILD_CORES-`getconf _NPROCESSORS_CONF`} && \
         libffi-dev \
         python3-dev \
         go \
-        musl-dev && \
+        musl-dev
+
 # compile curl to fix ssl for rtorrent
-cd /tmp && \
+RUN cd /tmp && \
 mkdir curl && \
 cd curl && \
 wget -qO- https://curl.haxx.se/download/curl-${CURL_VER}.tar.gz | tar xz --strip 1 && \
@@ -117,8 +120,9 @@ ldconfig /usr/bin && ldconfig /usr/lib && \
  mv /usr/share/webapps/rutorrent/conf/* \
         /defaults/rutorrent-conf/ && \
  rm -rf \
-        /defaults/rutorrent-conf/users && \
- pip3 install CfScrape \
+        /defaults/rutorrent-conf/users
+
+ RUN pip3 install CfScrape \
               cloudscraper && \
 # install webui extras
 # QuickBox Theme
@@ -162,8 +166,8 @@ git clone https://github.com/Micdu70/geoip2-rutorrent geoip2 && \
 rm -rf geoip && \
 mkdir -p /usr/share/GeoIP && \
 cd /usr/share/GeoIP && \
-wget -O GeoLite2-City.tar.gz "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-City&license_key=$MAXMIND_LICENSE_KEY&suffix=tar.gz" && \
-wget -O GeoLite2-Country.tar.gz  "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country&license_key=$MAXMIND_LICENSE_KEY&suffix=tar.gz" && \
+wget -O GeoLite2-City.tar.gz --user $MAXMIND_USER --password $MAXMIND_PASSWORD "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-City&license_key=$MAXMIND_LICENSE_KEY&suffix=tar.gz" && \
+wget -O GeoLite2-Country.tar.gz --user $MAXMIND_USER --password $MAXMIND_PASSWORD "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country&license_key=$MAXMIND_LICENSE_KEY&suffix=tar.gz" && \
 tar xzf GeoLite2-City.tar.gz && \
 tar xzf GeoLite2-Country.tar.gz && \
 rm -f *.tar.gz && \
@@ -171,30 +175,36 @@ mv GeoLite2-*/*.mmdb . && \
 cp *.mmdb /usr/share/webapps/rutorrent/plugins/geoip2/database/ && \
 pecl install geoip-${GEOIP_VER} && \
 chmod +x /usr/lib/php7/modules/geoip.so && \
-echo ";extension=geoip.so" >> /etc/php7/php.ini && \
+echo ";extension=geoip.so" >> /etc/php7/php.ini
+
 # install autodl-irssi perl modules
- perl -MCPAN -e 'my $c = "CPAN::HandleConfig"; $c->load(doit => 1, autoconfig => 1); $c->edit(prerequisites_policy => "follow"); $c->edit(build_requires_install_policy => "yes"); $c->commit' && \
+RUN perl -MCPAN -e 'my $c = "CPAN::HandleConfig"; $c->load(doit => 1, autoconfig => 1); $c->edit(prerequisites_policy => "follow"); $c->edit(build_requires_install_policy => "yes"); $c->commit' && \
  curl -L http://cpanmin.us | perl - App::cpanminus && \
         cpanm HTML::Entities XML::LibXML JSON JSON::XS && \
 # compile xmlrpc-c
 cd /tmp && \
 git clone https://github.com/mirror/xmlrpc-c.git && \
 cd /tmp/xmlrpc-c/stable && \
-./configure --with-libwww-ssl --disable-wininet-client --disable-curl-client --disable-libwww-client --disable-abyss-server --disable-cgi-server && make -j ${NB_CORES} && make install && \
+./configure --with-libwww-ssl --disable-wininet-client --disable-curl-client --disable-libwww-client --disable-abyss-server --disable-cgi-server && \
+make -j ${NB_CORES} && \
+make install
+
 # compile libtorrent
-cd /tmp && \
+RUN cd /tmp && \
 mkdir libtorrent && \
 cd libtorrent && \
-wget -qO- https://github.com/rakshasa/libtorrent/archive/${LIBTORRENT_VER}.tar.gz | tar xz --strip 1 && \
-./autogen.sh && ./configure && make -j ${NB_CORES} && make install && \
+wget -qO- https://github.com/rakshasa/libtorrent/archive/v${LIBTORRENT_VER}.tar.gz | tar xz --strip 1 && \
+./autogen.sh && ./configure && make -j ${NB_CORES} && make install
+
 # compile rtorrent
-cd /tmp && \
+RUN cd /tmp && \
 mkdir rtorrent && \
 cd rtorrent && \
-wget -qO- https://github.com/rakshasa/rtorrent/archive/${RTORRENT_VER}.tar.gz | tar xz --strip 1 && \
-./autogen.sh && ./configure --with-xmlrpc-c && make -j ${NB_CORES} && make install && \
+wget -qO- https://github.com/rakshasa/rtorrent/archive/v${RTORRENT_VER}.tar.gz | tar xz --strip 1 && \
+./autogen.sh && ./configure --with-xmlrpc-c && make -j ${NB_CORES} && make install
+
 # compile mediainfo packages
-curl -o \
+RUN curl -o \
 /tmp/libmediainfo.tar.gz -L \
         "http://mediaarea.net/download/binary/libmediainfo0/${MEDIAINF_VER}/MediaInfo_DLL_${MEDIAINF_VER}_GNU_FromSource.tar.gz" && \
 curl -o \
@@ -249,6 +259,7 @@ RUN NB_CORES=${BUILD_CORES-`getconf _NPROCESSORS_CONF`} && \
 COPY root/ /
 COPY VERSION /
 
-# ports and volumes
-EXPOSE 443 51415 3000
+# Port: rtorrent, flood, rutorrent
+EXPOSE 51415 3000 80
+
 VOLUME /config /downloads
