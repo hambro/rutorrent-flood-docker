@@ -22,7 +22,7 @@ services:
         - PGID=0
         - TZ=Europe/Kiev
         - CREATE_SUBDIR_BY_TRACKERS=NO
-        - SSL_ENABLED=YES
+        - SSL_ENABLED=NO
         - RT_TOKEN=
         - RT_MASTERS=
         - RT_COMPLETED=/config/log/rtorrent/rtorrent_completed.log
