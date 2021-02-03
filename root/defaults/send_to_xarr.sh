@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# "http://localhost:7878"
-baseUrl=$1
-key=$2
+apiUrl=$1
+apiKey=$2
+
 title=$3
 downloadUrl=$4
 indexer=$5
@@ -31,6 +31,6 @@ post_release() {
     fi
 }
 
-post_release '{"title":"'"$title"'","downloadUrl":"'"$downloadUrl"'","protocol":"torrent","publishDate":"'"$date"'"}'
+post_release '{"title":"'"$title"'","downloadUrl":"'"$downloadUrl"'","protocol":"torrent","publishDate":"'"$date"'","indexer":"'"$indexer"'"}'
 
 
